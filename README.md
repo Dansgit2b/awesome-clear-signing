@@ -25,7 +25,7 @@
 - [Libraries & SDKs](#libraries--sdks)
 - [Articles, Talks & Learning](#articles-talks--learning)
 - [Community & Governance](#community--governance)
-- [📚 Knowledge: EVM Messages, Transaction & Signing Formats](#-knowledge-evm-messages-transaction--signing-formats)
+- [Knowledge: EVM Messages, Transaction & Signing Formats](#knowledge-evm-messages-transaction--signing-formats)
 - [Contributing](#contributing)
 
 ---
@@ -71,7 +71,7 @@ graph LR
   712 --> 2612["ERC-2612<br/>permit()"]
   712 --> 1271["ERC-1271 / 6492<br/>contract signatures"]
   712 --> 4337["ERC-4337<br/>UserOperation hash"]
-  712 --> 7730["ERC-7730<br/>Clear Signing ✦"]
+  712 --> 7730["ERC-7730<br/>Clear Signing"]
   4361 -.-> 7730
   4337 -.-> 7730
 
@@ -114,7 +114,7 @@ graph LR
   msg --> D
   uo --> D
   auth -.-> D
-  D["ERC-7730<br/>Descriptor ✦<br/>context + display"] --> OUT["Human-readable intent<br/>wallet UI + device screen"]
+  D["ERC-7730<br/>Descriptor<br/>context + display"] --> OUT["Human-readable intent<br/>wallet UI + device screen"]
   D -.->|"no descriptor"| FB["ERC-8213<br/>fingerprint fallback"]
   FB --> OUT
 
@@ -238,7 +238,7 @@ Complementary layers — decode, simulate, and score a transaction before signin
 
 ---
 
-## 📚 Knowledge: EVM Messages, Transaction & Signing Formats
+## Knowledge: EVM Messages, Transaction & Signing Formats
 
 *The heart of clear signing is understanding **what** is actually being signed.* This section maps the formats a wallet may ask you to approve — and where clear signing applies to each.
 
@@ -278,11 +278,11 @@ A blind-signing wallet shows the raw hex. A **clear-signing** wallet uses the AB
 
 | Scheme | Prefix / format | What it's for | Risk if blind-signed |
 |---|---|---|---|
-| **`eth_sign`** | raw 32-byte hash, no prefix | Legacy raw-hash signing | 🔴 Highest — can be a disguised transaction hash. Most wallets warn/block. |
-| **`personal_sign` (EIP-191 `0x45`)** | `"\x19Ethereum Signed Message:\n" + len + msg` | Human-readable string signing, logins | 🟡 Safer, but phrasing can still mislead |
-| **[SIWE (EIP-4361)](https://eips.ethereum.org/EIPS/eip-4361)** | structured `personal_sign` text | "Sign-In with Ethereum" auth | 🟢 Structured & readable |
-| **EIP-712 (EIP-191 `0x01`)** | `0x19 0x01 ‖ domainSeparator ‖ hashStruct(message)` | Typed data: permits, orders, UserOps | 🟡 Readable *if* the wallet renders the struct + descriptor |
-| **[ERC-1271](https://eips.ethereum.org/EIPS/eip-1271) / [ERC-6492](https://eips.ethereum.org/EIPS/eip-6492)** | `isValidSignature` on the account contract | How **smart-contract wallets** sign the above | 🟡 Adds a contract-verification hop the wallet must surface honestly |
+| **`eth_sign`** | raw 32-byte hash, no prefix | Legacy raw-hash signing | **High** — can be a disguised transaction hash. Most wallets warn/block. |
+| **`personal_sign` (EIP-191 `0x45`)** | `"\x19Ethereum Signed Message:\n" + len + msg` | Human-readable string signing, logins | **Medium** — safer, but phrasing can still mislead |
+| **[SIWE (EIP-4361)](https://eips.ethereum.org/EIPS/eip-4361)** | structured `personal_sign` text | "Sign-In with Ethereum" auth | **Low** — structured & readable |
+| **EIP-712 (EIP-191 `0x01`)** | `0x19 0x01 ‖ domainSeparator ‖ hashStruct(message)` | Typed data: permits, orders, UserOps | **Medium** — readable *if* the wallet renders the struct + descriptor |
+| **[ERC-1271](https://eips.ethereum.org/EIPS/eip-1271) / [ERC-6492](https://eips.ethereum.org/EIPS/eip-6492)** | `isValidSignature` on the account contract | How **smart-contract wallets** sign the above | **Medium** — adds a contract-verification hop the wallet must surface honestly |
 
 **EIP-191 byte layout:**
 
@@ -313,7 +313,7 @@ A `UserOperation` is a **pseudo-transaction** for smart accounts. As of **EntryP
 UserOpHash (v0.8) = keccak256( 0x19 ‖ 0x01 ‖ entryPointDomainSeparator ‖ hashStruct(userOp) )
 ```
 
-⚠️ Earlier, still-dominant **EntryPoint v0.6 / v0.7** hash *without* EIP-712 — a plain ABI-encoded hash:
+**Note:** earlier, still-dominant **EntryPoint v0.6 / v0.7** hash *without* EIP-712 — a plain ABI-encoded hash:
 
 ```text
 userOpHash (v0.6/0.7) = keccak256( abi.encode( keccak256(packedUserOp), entryPoint, chainId ) )
@@ -353,11 +353,11 @@ The wallet resolves the descriptor for the target contract/message, applies each
 
 ### Reader's checklist before you sign
 
-- 🔎 **Is it a message or a transaction?** A raw-hash `eth_sign` prompt is a red flag.
-- 🏷️ **Does the intent match the app?** "Approve unlimited" on a page you thought was a swap = stop.
-- 🔗 **Right `chainId` and `verifyingContract`?** Domain mismatch = possible replay/phishing.
-- 💰 **Amounts, decimals, recipient** rendered in human units — not raw `uint256`.
-- ✅ **Simulated + verified?** Clear signing + simulation (Blockaid/Tenderly) + fingerprints (ERC-8213) is defense in depth.
+- **Is it a message or a transaction?** A raw-hash `eth_sign` prompt is a red flag.
+- **Does the intent match the app?** "Approve unlimited" on a page you thought was a swap = stop.
+- **Right `chainId` and `verifyingContract`?** Domain mismatch = possible replay/phishing.
+- **Amounts, decimals, recipient** rendered in human units — not raw `uint256`.
+- **Simulated + verified?** Clear signing + simulation (Blockaid/Tenderly) + fingerprints (ERC-8213) is defense in depth.
 
 ---
 
