@@ -211,13 +211,24 @@ Complementary layers — decode, simulate, and score a transaction before signin
 
 ## Articles, Talks & Learning
 
+### Blogs & tutorials
+
 - **[Add clear signing to your protocol with ERC-7730 (ethereum.org)](https://ethereum.org/developers/tutorials/clear-signing/)** — Official hands-on tutorial for writing descriptors. `article`
+- **[Implement EIP-7730 today (Trail of Bits)](https://blog.trailofbits.com/2025/08/27/implement-eip-7730-today/)** — Security-firm walkthrough of writing a descriptor for a Uniswap swap, with the tradeoffs spelled out. `article`
 - **[Blind Signing — Solved? (Cyfrin)](https://www.cyfrin.io/blog/blind-signing-solved)** — Launch-day overview of the 7730 / 8176 / 8213 suite, with `clearsig` examples. `article`
 - **[Solving Blind Signing: ERC-7730 and ERC-8213 (Beosin)](https://beosin.com/resources/solving-blind-signing-an-analysis-of-erc-7730-and-erc-8213)** — Technical comparison of the descriptor vs. fingerprint approaches. `article`
+- **[What Is Clear Signing? ERC-7730 Explained (Ambire)](https://blog.ambire.com/clear-signing-erc-7730/)** — Approachable intro with before/after `approve()` examples. `article`
+- **[What is ERC-7730? (QuickNode)](https://www.quicknode.com/blog/erc-7730-clear-signing-standard)** — Developer explainer that's honest about the limits (readable ≠ verified). `article`
 - **[ERC-7730 v2 & The Evolution of Clear Signing (Ledger)](https://www.ledger.com/blog-the-evolution-of-clear-signing)** — Ledger's overview of the standard's direction. `article`
 - **[EIP-712 explained (blockchain-wiki)](https://github.com/fullstack-development/blockchain-wiki-en/blob/main/EIPs/eip-712/README.md)** — Deep dive on typed-data hashing. `article`
 - **[Guide for Wallet Devs: EIP-7702 + ERC-4337](https://erc4337.substack.com/p/guide-for-wallet-devs-for-getting)** — How the two combine for smart-account UX. `article`
 - **[Is WalletConnect Safe? v2 Security Guide](https://ndlabs.dev/is-walletconnect-safe)** — Threat model behind approval-based drainer scams. `article`
+
+### Videos & talks
+
+- **[You can SEE what you sign now?? — ERC-7730, 8213 & Clear Signing (Cyfrin / Patrick Collins)](https://www.youtube.com/watch?v=k5__eA1AH-w)** — Developer-focused walkthrough of the full suite. `video`
+- **[Why Blind Signing Is Killing DeFi — Ledger x 1inch (The Ledger Podcast)](https://www.youtube.com/watch?v=KKSPk9CahYE)** — Why blind signing persists in DeFi and how clear signing fixes it. `video`
+- **[Clear Signing Explained: How Ledger Protects Your Digital Assets (The Ledger Podcast)](https://www.youtube.com/watch?v=eMMa62cN88w)** — Accessible overview of the "know what you sign" problem in self-custody. `video`
 
 ## Community & Governance
 

@@ -23,7 +23,7 @@ Resources that help make transaction and message signing **human-readable** on E
 
 - One entry per line, in the relevant section, alphabetical **or** most-canonical first.
 - Format: `**[Name](url)** — One-line description. \`tag\``
-- Tags: `spec`, `official`, `tool`, `wallet`, `security`, `reference`, `article`, `community`, `incident`.
+- Tags: `spec`, `official`, `tool`, `wallet`, `security`, `reference`, `article`, `video`, `community`, `incident`.
 - Prefer primary sources (the spec, the repo, the official docs) over blog reposts.
 - Descriptions: factual, ≤ ~120 chars, no hype ("blazing-fast", "revolutionary").
 - Add new entries to the [Contents](README.md#contents) table of contents if you add a section.
