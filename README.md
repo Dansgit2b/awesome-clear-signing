@@ -43,6 +43,71 @@ When you sign a blockchain transaction, your wallet often shows you a wall of he
 
 The Ethereum standards that make clear signing possible — the formats being signed and the descriptor format that explains them.
 
+### How the standards fit together
+
+**1 · Evolution of signing standards.** Everything descends from the `0x19` prefix of EIP‑191. Typed data (EIP‑712) unlocked structured, replay‑safe signing that permits, orders, account abstraction, and finally clear signing all build on.
+
+```mermaid
+graph LR
+  191["EIP-191<br/>Signed Data Standard<br/>(0x19 prefix)"]
+  191 -->|"version 0x45"| PS["personal_sign<br/>readable strings"]
+  191 -->|"version 0x01"| 712["EIP-712<br/>Typed Structured Data"]
+  PS --> 4361["EIP-4361<br/>Sign-In with Ethereum"]
+  712 --> 2612["ERC-2612<br/>permit()"]
+  712 --> 4337["ERC-4337<br/>UserOperation hash"]
+  712 --> 7730["ERC-7730<br/>Clear Signing ✦"]
+  4361 -.-> 7730
+  4337 -.-> 7730
+
+  classDef sign fill:#14283a,stroke:#6ea8ff,color:#e7ecf4;
+  classDef aa fill:#241a34,stroke:#c9a2ff,color:#e7ecf4;
+  classDef cs fill:#1f4c3f,stroke:#7ef0c8,color:#e7ecf4,stroke-width:2px;
+  class 191,PS,712,4361,2612 sign;
+  class 4337 aa;
+  class 7730 cs;
+```
+
+**2 · Evolution of the transaction envelope.** EIP‑2718 turned the single legacy format into a typed envelope, so each later fee/data feature ships as a new type byte — all valid clear‑signing targets.
+
+```mermaid
+graph LR
+  legacy["Legacy tx<br/>RLP · no type byte"] --> e2718["EIP-2718<br/>Typed Tx Envelope"]
+  e2718 --> t01["EIP-2930 · 0x01<br/>Access List"]
+  e2718 --> t02["EIP-1559 · 0x02<br/>Dynamic Fee"]
+  e2718 --> t03["EIP-4844 · 0x03<br/>Blob"]
+  e2718 --> t04["EIP-7702 · 0x04<br/>Set EOA Code"]
+
+  classDef env fill:#14283a,stroke:#6ea8ff,color:#e7ecf4;
+  classDef ty fill:#0f2b22,stroke:#7ef0c8,color:#e7ecf4;
+  class legacy,e2718 env;
+  class t01,t02,t03,t04 ty;
+```
+
+**3 · What ERC‑7730 unifies.** Clear signing sits on top of *both* pipelines — decoding transaction calldata (via ABIs) **and** off‑chain EIP‑712 messages — and renders one human‑readable intent, identical on phone and hardware screen.
+
+```mermaid
+graph LR
+  subgraph SIGNED["What a user is asked to sign"]
+    direction TB
+    tx["EVM Transaction<br/>calldata + ABI"]
+    msg["EIP-712 Message<br/>permit · order · SIWE"]
+    uo["ERC-4337<br/>UserOperation"]
+    auth["EIP-7702<br/>Authorization tuple"]
+  end
+  tx --> D
+  msg --> D
+  uo --> D
+  auth -.-> D
+  D["ERC-7730<br/>Descriptor ✦<br/>context + display"] --> OUT["Human-readable intent<br/>wallet UI + device screen"]
+
+  classDef inp fill:#14283a,stroke:#6ea8ff,color:#e7ecf4;
+  classDef cs fill:#1f4c3f,stroke:#7ef0c8,color:#e7ecf4,stroke-width:2px;
+  classDef out fill:#241a34,stroke:#c9a2ff,color:#e7ecf4;
+  class tx,msg,uo,auth inp;
+  class D cs;
+  class OUT out;
+```
+
 - **[ERC‑7730 — Structured Data Clear Signing Format](https://eips.ethereum.org/EIPS/eip-7730)** — The core standard. JSON descriptors that enrich ABIs and EIP‑712 schemas with formatting + intent metadata. `spec`
 - **[ERC‑7730 spec (registry copy)](https://github.com/ethereum/clear-signing-erc7730-registry/blob/master/specs/erc-7730.md)** — Canonical, versioned spec text maintained in the registry repo. `spec`
 - **[EIP‑712 — Typed Structured Data Hashing and Signing](https://eips.ethereum.org/EIPS/eip-712)** — Human‑readable typed message signing; the basis for permits, orders, and UserOp hashes. `spec`
